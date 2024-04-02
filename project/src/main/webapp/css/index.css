@@ -1,0 +1,14 @@
+#titleVar {
+    color: gray;
+    font-weight: bold;
+}
+
+#tableArea .boardAllList th,
+#tableArea .boardAllList tbody td {
+    text-align: center;
+}
+#tableArea .boardAllList tbody .exclude-row {
+    text-align: left;
+}
+
+
