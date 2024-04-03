@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.board.service.BoardService;
+import egovframework.example.board.service.BoardVO;
 import egovframework.example.sample.service.SampleDefaultVO;
 
 @Service
@@ -22,6 +23,11 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	@Override
 	public int selectBoardListTotCnt(SampleDefaultVO searchVO) {
 		return boardMapper.selectBoardListTotCnt(searchVO);
+	}
+
+	@Override
+	public BoardVO selectBoard(BoardVO vo) throws Exception {
+		return boardMapper.selectBoard(vo);
 	}
 
 }

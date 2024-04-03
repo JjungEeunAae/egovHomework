@@ -2,24 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.board.service.impl.BoardMapper">
 	<select id="selectBoardList" parameterType="searchVO" resultType="boardVO">
-			SELECT board_idx
-				 , writer
-				 , title
-				 , content
-				 , ues_yn
-				 , date_created
-				 , date_modify
-				 , view_count
-				 , like_count
-			  FROM board
+			SELECT  BOARD_IDX
+			      , WRITER
+			      , TITLE
+			      , CONTENT
+			      , UES_YN
+			      , DATE_CREATED
+			      , DATE_MODIFY
+			      , VIEW_COUNT
+			      , LIKE_COUNT
+			  FROM BOARD
 			 WHERE 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 		        <choose>
 		            <when test="searchCondition == 0">
-						AND	title LIKE '%' || #{searchKeyword} || '%'
+						AND	TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 		            <when test="searchCondition == 1">
-						AND	content LIKE '%' || #{searchKeyword} || '%'
+						AND	CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 				</choose>
 			</if>
@@ -29,17 +29,31 @@
 
 	<select id="selectBoardListTotCnt" parameterType="searchVO" resultType="int">
 			SELECT COUNT(*) totcnt
-			FROM board
+			FROM BOARD
 			WHERE 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 		        <choose>
 		            <when test="searchCondition == 0">
-						AND title LIKE '%' || #{searchKeyword} || '%'
+						AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 		            <when test="searchCondition == 1">
-						AND	content LIKE '%' || #{searchKeyword} || '%'
+						AND	CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 				</choose>
 			</if>
+	</select>
+	
+	<select id="selectBoard" resultType="boardVO">
+		SELECT BOARD_IDX
+		     , WRITER
+		     , TITLE
+		     , CONTENT
+		     , UES_YN
+		     , DATE_CREATED
+		     , DATE_MODIFY
+		     , VIEW_COUNT
+		     , LIKE_COUNT
+		  FROM BOARD
+		 WHERE BOARD_IDX = #{board_idx}
 	</select>
 </mapper>

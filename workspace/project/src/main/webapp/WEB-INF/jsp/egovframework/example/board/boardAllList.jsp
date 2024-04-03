@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +17,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <link href="css/index.css" rel="stylesheet" />
+        <script src="js/index.js" type="text/javaScript" language="javascript" defer="defer"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -45,31 +48,49 @@
                             <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시판</h1>
                             <!-- Post categories-->
                         </header>
-                        <div id="tableArea">
-                            <table class="table boardAllList">
-                                <colgroup>
-                                    <col width="5%"/>
-                                    <col width="15%"/>
-                                    <col width="30%"/>
-                                    <col width="15%"/>
-                                    <col width="15%"/>
-                                    <col width="10%"/>
-                                    <col width="10%"/>
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>제목</th>
-                                        <th>내용</th>
-                                        <th>작성일</th>
-                                        <th>작성자</th>
-                                        <th>좋아요</th>
-                                        <th>조회수</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="boardListRender">
-                                </tbody>
-                            </table>
+                        <div id="tableArea" class="m-3 p-2">
+                            <form:form modelAttribute="searchVO" id="listForm" name="listForm" method="post">
+                                <input type="hidden" name="selectedId" />
+                                <table class="table boardAllList">
+                                    <colgroup>
+                                        <col width="5%"/>
+                                        <col width="15%"/>
+                                        <col width="30%"/>
+                                        <col width="15%"/>
+                                        <col width="15%"/>
+                                        <col width="10%"/>
+                                        <col width="10%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>제목</th>
+                                            <th>내용</th>
+                                            <th>작성일</th>
+                                            <th>작성자</th>
+                                            <th>좋아요</th>
+                                            <th>조회수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="result" items="${resultList}" varStatus="status">
+                                            <tr>
+                                                <td><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></td>
+                                                <td><a href="javascript:fn_egov_select('<c:out value="${result.board_idx}"/>')"><c:out value="${result.title}"/></a></td>
+                                                <td class="exclude-row"><c:out value="${result.content}"/>&nbsp;</td>
+                                                <td><fmt:formatDate value="${result.date_created}" pattern="yyyy-MM-dd HH:mm:ss" />&nbsp;</td>
+                                                <td><c:out value="${result.writer}"/>&nbsp;</td>
+                                                <td><c:out value="${result.like_count}"/>&nbsp;</td>
+                                                <td><c:out value="${result.view_count}"/>&nbsp;</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <div id="paging" class="d-flex justify-content-center">
+                                    <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+                                    <form:hidden path="pageIndex" />
+                                </div>
+                            </form:form>
                         </div>
                     </article>
                 </div>
@@ -91,7 +112,7 @@
                         </div>
                     </div>
                     <!-- Categories widget-->
-                    <div class="card mb-4">
+                    <!-- <div class="card mb-4">
                         <div class="card-header">Categories</div>
                         <div class="card-body">
                             <div class="row">
@@ -111,15 +132,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Side widget-->
-                    <div class="card mb-4">
+                    <!-- <div class="card mb-4">
                         <div class="card-header">Side Widget</div>
                         <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
+        
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
@@ -128,6 +150,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <script src="js/index.js"></script>
+        
     </body>
 </html>

@@ -8,6 +8,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,14 +16,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.board.service.BoardService;
+import egovframework.example.board.service.BoardVO;
 import egovframework.example.board.service.impl.BoardServiceImpl;
 import egovframework.example.sample.service.SampleDefaultVO;
+import egovframework.example.sample.service.SampleVO;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("board")
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
@@ -31,7 +35,7 @@ public class BoardController {
 	@Resource(name = "propertiesService")
 	private EgovPropertyService propertiesService;
 
-	@GetMapping
+	@PostMapping("list.do")
 	public String boardAllList(@ModelAttribute("searchVO") SampleDefaultVO searchVO, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -47,6 +51,9 @@ public class BoardController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
+		List<?> boardList = boardService.selectBoardList(searchVO);
+		model.addAttribute("resultList", boardList);
+		
 		/** paging */
 		int totCnt = boardService.selectBoardListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -55,13 +62,33 @@ public class BoardController {
 		return "board/boardAllList";
 	}
 	
-	@PostMapping
-	public List<?> boardListAJAX(@RequestBody SampleDefaultVO vo) throws Exception {
-		return boardService.selectBoardList(vo);
+	/**
+	 * 글 수정화면을 조회한다.
+	 * @param id - 수정할 글 id
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param model
+	 * @return "boardDetail"
+	 * @exception Exception
+	 */
+	@PostMapping("detail.do")
+	public String boardDetail(@RequestParam("selectedId") int idx
+							, @ModelAttribute("searchVO") SampleDefaultVO searchVO
+							, Model model) throws Exception {
+		BoardVO vo = new BoardVO();
+		vo.setBoard_idx(idx);
+		model.addAttribute(selectBoard(vo, searchVO));		
+		return "board/boardDetail";
 	}
 	
-	@GetMapping("{idx}")
-	public String boardDetail(@PathVariable int idx) {
-		return "board/boardDetail";
+	/**
+	 * 글을 조회한다.
+	 * @param boardVO - 조회할 정보가 담긴 VO
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param status
+	 * @return @ModelAttribute("boardVO") - 조회한 정보
+	 * @exception Exception
+	 */
+	public BoardVO selectBoard(BoardVO boardVO, @ModelAttribute("searchVO") SampleDefaultVO searchVO) throws Exception {
+		return boardService.selectBoard(boardVO);
 	}
 }

@@ -1,33 +1,22 @@
-const boardListRender = $("#boardListRender");
+/* pagination 페이지 링크 function */
+function fn_egov_link_page(pageNo){
+    document.listForm.pageIndex.value = pageNo;
+    document.listForm.action = "/project/list.do";
+    document.listForm.submit();
+}
 
-const boardListAJAX = () => {
-    let data = {
-        searchCondition : $("#searchItem").val(),
-        searchKeyword : $("#searchContent").val()
-    };
 
-    $.ajax({
-        url: "board",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(data),
-        success: function(response) {
-            // AJAX 요청이 성공한 경우 여기에 응답 처리 코드를 작성합니다.
-            console.log("Response:", response);
-        },
-        error: function(error) {
-            // AJAX 요청이 실패한 경우 여기에 오류 처리 코드를 작성합니다.
-            console.error("Error:", error);
-        }
-    });
-};
+/* 글 수정 화면 function */
+function fn_egov_select(idx) {
+    document.listForm.selectedId.value = idx;
+    document.listForm.action = "/project/detail.do" ;
+    document.listForm.submit();
+}
 
-boardListAJAX();
 
-const boardListSearch = () => {
-    $("#searchBtn").click(() => {
-        boardListAJAX();
-    })
-};
-
-boardListSearch();
+/* 글 목록 화면 function */
+function fn_egov_selectList() {
+    // document.listForm.action = "<c:url value='/list.do'/>";
+    document.listForm.action = "/project/list.do";
+    document.listForm.submit();
+}
