@@ -12,6 +12,7 @@ public interface BoardService {
 	 * @exception Exception
 	 */
 	List<?> selectBoardList(SampleDefaultVO searchVO) throws Exception;
+	
 	/**
 	 * 글 총 갯수를 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
@@ -19,6 +20,7 @@ public interface BoardService {
 	 * @exception
 	 */
 	int selectBoardListTotCnt(SampleDefaultVO searchVO);
+	
 	/**
 	 * 글을 조회한다.
 	 * @param vo - 조회할 정보가 담긴 BoardVO
@@ -26,4 +28,12 @@ public interface BoardService {
 	 * @exception Exception
 	 */
 	BoardVO selectBoard(BoardVO vo)  throws Exception;
+	
+	/**
+	 * 글을 등록한다.
+	 * @param vo - 등록할 정보가 담긴 BoardVO
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	String insert(BoardVO vo) throws Exception;
 }

@@ -1,14 +1,26 @@
+/* 게시판 제목 앞에 | 스타일 넣어준 것 */
 #titleVar {
     color: gray;
     font-weight: bold;
 }
-
+/* 게시판 목록 열 가운데정렬 */
 #tableArea .boardAllList th,
 #tableArea .boardAllList tbody td {
     text-align: center;
 }
+/* 게시판 목록 특정 열 왼쪽정렬(게시내용) */
 #tableArea .boardAllList tbody .exclude-row {
     text-align: left;
 }
-
+/* 게시글 내용 한줄라인 글자수 제한 */
+.exclude-row .txt_line {
+    width:190px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+/* 버튼 오른쪽정렬 */
+.btn-area {
+    float: right;
+}
 

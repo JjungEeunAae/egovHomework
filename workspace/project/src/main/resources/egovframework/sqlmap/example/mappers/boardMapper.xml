@@ -56,4 +56,19 @@
 		  FROM BOARD
 		 WHERE BOARD_IDX = #{board_idx}
 	</select>
+	
+	<insert id="insert" parameterType="boardVO">
+		INSERT INTO BOARD
+			( WRITER
+		    , TITLE
+		    , CONTENT
+		    , UES_YN
+		    , DATE_CREATED )
+		VALUES
+			( #{writer}
+			, #{title}
+			, #{content}
+			, 'N'
+			, NOW() )
+	</insert>
 </mapper>

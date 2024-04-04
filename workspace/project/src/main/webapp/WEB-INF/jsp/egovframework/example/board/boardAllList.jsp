@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Insert title here</title>
+        <title>게시판 목록</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -76,19 +76,22 @@
                                         <c:forEach var="result" items="${resultList}" varStatus="status">
                                             <tr>
                                                 <td><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/></td>
-                                                <td><a href="javascript:fn_egov_select('<c:out value="${result.board_idx}"/>')"><c:out value="${result.title}"/></a></td>
-                                                <td class="exclude-row"><c:out value="${result.content}"/>&nbsp;</td>
+                                                <td><a href="javascript:fn_select('<c:out value="${result.board_idx}"/>')"><c:out value="${result.title}"/></a></td>
+                                                <td class="exclude-row"><div class="txt_line">${result.content}</div></td>
                                                 <td><fmt:formatDate value="${result.date_created}" pattern="yyyy-MM-dd HH:mm:ss" />&nbsp;</td>
-                                                <td><c:out value="${result.writer}"/>&nbsp;</td>
-                                                <td><c:out value="${result.like_count}"/>&nbsp;</td>
-                                                <td><c:out value="${result.view_count}"/>&nbsp;</td>
+                                                <td><c:out value="${result.writer}"/></td>
+                                                <td><c:out value="${result.like_count}"/></td>
+                                                <td><c:out value="${result.view_count}"/></td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
                                 <div id="paging" class="d-flex justify-content-center">
-                                    <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+                                    <ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_link_page" />
                                     <form:hidden path="pageIndex" />
+                                </div>
+                                <div class="btn-area mb-4">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="fn_addView()">등록</button>
                                 </div>
                             </form:form>
                         </div>
