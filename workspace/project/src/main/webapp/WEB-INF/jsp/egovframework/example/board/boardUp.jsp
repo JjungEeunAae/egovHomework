@@ -10,9 +10,7 @@
     <head>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            <title>Sample <c:if test="${registerFlag == 'create'}"><spring:message code="button.create" /></c:if>
-                <c:if test="${registerFlag == 'modify'}"><spring:message code="button.modify" /></c:if>
-            </title>
+            <title>게시글 수정</title>
             <!-- Favicon-->
             <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
             <!-- Core theme CSS (includes Bootstrap)-->
@@ -21,7 +19,7 @@
             <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
             <script type="text/javascript" src="<c:url value='/cmmn/validator.do'/>"></script>
             <validator:javascript formName="boardVO" staticJavascript="false" xhtml="true" cdata="false"/>
-            <script src="js/add_index.js" language="javascript" defer="defer"></script>
+            <script src="js/up_index.js" language="javascript" defer="defer"></script>
     </head>
     <body>
         <!-- Responsive navbar-->
@@ -45,27 +43,28 @@
                     <div class="col-md-10" style="margin: 0 auto;">
                         <header class="mb-4 mt-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시글 등록</h1>
+                            <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시글 수정</h1>
                         </header>
                         <form:form modelAttribute="vo" id="detailForm" name="detailForm">
                             <div class="form-group">
                                 <label for="title">제목</label>
-                                <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" />
+                                <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" value="${upBoardInfo.title}" />
                                 &nbsp;<form:errors path="title" />
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" />
+                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">
                                 <label for="content">내용</label>
+                                <input type="text" value="${upBoardInfo.content}" style="display: none;" id="contentResponse">
                                 <form:textarea type="text" path="content" class="form-control" id="content" placeholder="내용 입력" rows="10" />
                                 &nbsp;<form:errors path="content" />
                             </div>
                             <div class="d-flex justify-content-end">
-                                <a href="/project/list.do" role="button" class="btn btn-secondary mr-3 btn-lg">취소</a>
-                                <button type="button" class="btn btn-primary btn-lg" id="boardSave">등록</button>
+                                <button type="button" id="backBnt" class="btn btn-secondary mr-3 btn-lg">뒤로가기</button>
+                                <button type="button" class="btn btn-primary btn-lg" id="boardUpBnt">수정</button>
                             </div>
                         </form:form>
                     </div>

@@ -24,37 +24,47 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	/** boardMapper */
 	@Autowired
 	private BoardMapper boardMapper;
-	
-	/** ID Generation */
-	@Resource(name = "egovIdGnrService")
-	private EgovIdGnrService egovIdGnrService;
 
+	// 전체 게시글 조회 로직
 	@Override
 	public List<?> selectBoardList(SampleDefaultVO searchVO) throws Exception {
 		return boardMapper.selectBoardList(searchVO);
 	}
 
+	// 전체 게시글 개수 조회 로직
 	@Override
 	public int selectBoardListTotCnt(SampleDefaultVO searchVO) {
 		return boardMapper.selectBoardListTotCnt(searchVO);
 	}
 
+	// 게시글 단건조회 로직
 	@Override
 	public BoardVO selectBoard(BoardVO vo) throws Exception {
 		return boardMapper.selectBoard(vo);
 	}
 
+	// 게시글 등록 로직
 	@Override
 	public String insert(BoardVO vo) throws Exception {
 		LOGGER.debug(vo.toString());
-
-		/** ID Generation Service */
-		String id = egovIdGnrService.getNextStringId();
-		vo.setBoard_idx(Integer.parseInt(id));
+		String response = "";
 		LOGGER.debug(vo.toString());
 
-		boardMapper.insert(vo);
-		return id;
+		int result = boardMapper.insert(vo);
+		
+		if(result > 0) {
+			response = "SUCCESS";
+		} else {
+			response = "FAIL";
+		}
+		
+		return response;
+	}
+
+	// 게시글 최신 번호
+	@Override
+	public int maxBoardIndex() throws Exception {
+		return boardMapper.maxBoardIndex();
 	}
 
 }

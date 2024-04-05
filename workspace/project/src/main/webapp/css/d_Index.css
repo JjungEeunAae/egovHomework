@@ -1,3 +1,10 @@
 .contents p {
     word-wrap: break-word;
 }
+#boardListAndUpAndDelBnt {
+    float: right;
+    width: 24%;
+}
+#boardListAndUpAndDelBnt button {
+    margin-left: 3%;
+}

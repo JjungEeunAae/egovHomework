@@ -36,4 +36,11 @@ public interface BoardService {
 	 * @exception Exception
 	 */
 	String insert(BoardVO vo) throws Exception;
+	
+	/**
+	 * 게시글의 최고 최신 게시글 번호를 가져온다.
+	 * @return 최신 게시글 번호
+	 * @exception Exception
+	 */
+	int maxBoardIndex() throws Exception;
 }

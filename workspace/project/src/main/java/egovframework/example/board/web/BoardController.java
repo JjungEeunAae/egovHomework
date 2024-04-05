@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.example.board.service.BoardService;
@@ -43,7 +44,7 @@ public class BoardController {
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
 
-	@RequestMapping(value = "/list.do")
+	@RequestMapping(value = "/list.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardAllList(@ModelAttribute("searchVO") SampleDefaultVO searchVO, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -104,36 +105,63 @@ public class BoardController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/add.do")
-	public String addView() throws Exception {
+	public String addView(@ModelAttribute("vo") BoardVO vo
+						, Model model) throws Exception {
+		// HTML form 태그 내에 있는 input 또는 textarea 태그의 path에 맞춰 BoardVO에 셋팅
+		model.addAttribute("vo", new BoardVO());
 		return "board/boardAdd";
 	}
 	
 	/**
 	 * 글을 등록한다.
 	 * @param sampleVO - 등록할 정보가 담긴 VO
-	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
 	 * @param status
-	 * @return "forward:/egovSampleList.do"
+	 * @return "forward:/list.do"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/boardAdd.do", method = RequestMethod.POST)
-	public String addSample(BoardVO vo
-						  , BindingResult bindingResult
-						  , Model model
+	public String addSample(@ModelAttribute("vo") BoardVO vo
 						  , SessionStatus status) throws Exception {
-		// Server-Side Validation - 폼검증
-		beanValidator.validate(vo, bindingResult);
-
-		if (bindingResult.hasErrors()) {
-//			model.addAttribute("sampleVO", sampleVO);
-			return "sample/egovSampleRegister";
-		}
-
 		// 게시글 등록 쿼리문 실행
-		boardService.insert(vo);
-		// 결과
-		status.setComplete();
+		String result = boardService.insert(vo);
+		int idx = boardService.maxBoardIndex();
+		if(result.equals("SUCCESS")) {
+			// 결과
+			status.setComplete();
+			return "redirect:/list.do?idx=" + idx + "&result=true";
+		} else {
+			return "forward:/add.do";
+		}
+	}
+	
+	/**
+	 * 글 수정 화면을 조회한다.
+	 * @param idx - 수정할 게시글 번호
+	 * @param BoardVO - 목록 조회조건 정보가 담긴 VO
+	 * @param model
+	 * @return "egovSampleRegister"
+	 */
+	@RequestMapping(value = "/up.do")
+	public String upView(@ModelAttribute("vo") BoardVO vo
+						, @RequestParam("idx") int idx
+						, Model model) throws Exception {
+		BoardVO bvo = new BoardVO();
+		bvo.setBoard_idx(idx);
 		
-		return "forward:/list.do";
+		model.addAttribute("upBoardInfo", selectBoard(bvo));
+		return "board/boardUp";
+	}
+	
+	/**
+	 * 글을 수정한다.
+	 * @param vo - 수정할 정보가 담긴 BoardVO
+	 * @param status
+	 * @return "forward:/detail.do"
+	 * @exception Exception
+	 */
+	@RequestMapping("/boardUp.do")
+	public String update(@ModelAttribute("vo") BoardVO vo
+			  			, SessionStatus status) throws Exception {
+		return null;
 	}
 }

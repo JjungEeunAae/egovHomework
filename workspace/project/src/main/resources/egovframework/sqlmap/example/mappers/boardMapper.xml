@@ -15,10 +15,10 @@
 			 WHERE 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 		        <choose>
-		            <when test="searchCondition == 0">
+		            <when test="searchCondition == 1">
 						AND	TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
-		            <when test="searchCondition == 1">
+		            <when test="searchCondition == 2">
 						AND	CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 				</choose>
@@ -29,14 +29,14 @@
 
 	<select id="selectBoardListTotCnt" parameterType="searchVO" resultType="int">
 			SELECT COUNT(*) totcnt
-			FROM BOARD
-			WHERE 1=1
+			  FROM BOARD
+			 WHERE 1=1
 			<if test="searchKeyword != null and searchKeyword != ''">
 		        <choose>
-		            <when test="searchCondition == 0">
+		            <when test="searchCondition == 1">
 						AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
-		            <when test="searchCondition == 1">
+		            <when test="searchCondition == 2">
 						AND	CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 				</choose>
@@ -59,16 +59,21 @@
 	
 	<insert id="insert" parameterType="boardVO">
 		INSERT INTO BOARD
-			( WRITER
-		    , TITLE
-		    , CONTENT
-		    , UES_YN
-		    , DATE_CREATED )
+			 ( WRITER
+		     , TITLE
+		     , CONTENT
+		     , UES_YN
+		     , DATE_CREATED )
 		VALUES
-			( #{writer}
-			, #{title}
-			, #{content}
-			, 'N'
-			, NOW() )
+			 ( #{writer}
+			 , #{title}
+			 , #{content}
+			 , 'N'
+			 , NOW() )
 	</insert>
+	
+	<select id="maxBoardIndex" resultType="int">
+		SELECT MAX(BOARD_IDX) BOARD_IDX
+  		  FROM BOARD
+	</select>
 </mapper>

@@ -1,3 +1,6 @@
+#modalBnt, [for='searchCondition'] {
+    display: none;
+}
 /* 게시판 제목 앞에 | 스타일 넣어준 것 */
 #titleVar {
     color: gray;
@@ -23,4 +26,3 @@
 .btn-area {
     float: right;
 }
-
