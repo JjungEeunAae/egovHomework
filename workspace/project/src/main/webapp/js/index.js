@@ -9,7 +9,7 @@ function fn_link_page(pageNo){
 
 /* 글 수정 화면 function */
 function fn_select(idx) {
-    document.listForm.selectedId.value = idx;
+    document.listForm.idx.value = idx;
     document.listForm.action = "/project/detail.do" ;
     document.listForm.submit();
 };

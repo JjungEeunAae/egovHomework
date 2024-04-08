@@ -10,26 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
-import egovframework.example.board.service.impl.BoardServiceImpl;
 import egovframework.example.sample.service.SampleDefaultVO;
-import egovframework.example.sample.service.SampleVO;
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class BoardController {
@@ -80,11 +71,11 @@ public class BoardController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/detail.do")
-	public String boardDetail(@RequestParam("selectedId") int idx
+	public String boardDetail(@RequestParam("idx") int idx
 							, Model model) throws Exception {
 		BoardVO vo = new BoardVO();
 		vo.setBoard_idx(idx);
-		model.addAttribute("boardInfo", selectBoard(vo));		
+		model.addAttribute("boardInfo", selectBoard(vo));
 		return "board/boardDetail";
 	}
 	
@@ -139,7 +130,7 @@ public class BoardController {
 	 * @param idx - 수정할 게시글 번호
 	 * @param BoardVO - 목록 조회조건 정보가 담긴 VO
 	 * @param model
-	 * @return "egovSampleRegister"
+	 * @return "boardUp"
 	 */
 	@RequestMapping(value = "/up.do")
 	public String upView(@ModelAttribute("vo") BoardVO vo
@@ -156,12 +147,40 @@ public class BoardController {
 	 * 글을 수정한다.
 	 * @param vo - 수정할 정보가 담긴 BoardVO
 	 * @param status
-	 * @return "forward:/detail.do"
+	 * @return "redirect:/detail.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/boardUp.do")
+	@RequestMapping(value = "/boardUp.do", method = RequestMethod.POST)
 	public String update(@ModelAttribute("vo") BoardVO vo
+						, RedirectAttributes redirectAttributes
 			  			, SessionStatus status) throws Exception {
-		return null;
+		int result = boardService.update(vo);
+		if(result > 0) {
+			status.setComplete();
+			// 수정 후 게시글 상세 조회로 바로 이동
+			redirectAttributes.addAttribute("idx", vo.getBoard_idx());
+			return "redirect:/detail.do";
+		} else {
+			return "forward:/up.do?idx=" + vo.getBoard_idx();
+		}
+	}
+	
+	/**
+	 * 글을 삭제한다.
+	 * @param boardIdx - 삭제할 글번호
+	 * @param status
+	 * @return "삭제 결과값"
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "boardDel.do", method = RequestMethod.POST)
+	public String deleteSample(@RequestParam("boardIdx") int boardIdx
+			                  , SessionStatus status) throws Exception {
+		int res = boardService.delete(boardIdx);
+		if(res > 0) {
+			status.setComplete();
+			return "redirect:/list.do";
+		} else {
+			return "forward:/detail.do?idx=" + boardIdx;
+		}
 	}
 }

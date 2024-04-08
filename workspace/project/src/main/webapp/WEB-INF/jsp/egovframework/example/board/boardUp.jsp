@@ -18,8 +18,9 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
             <script type="text/javascript" src="<c:url value='/cmmn/validator.do'/>"></script>
-            <validator:javascript formName="boardVO" staticJavascript="false" xhtml="true" cdata="false"/>
             <script src="js/up_index.js" language="javascript" defer="defer"></script>
+            <validator:javascript formName="boardVO" staticJavascript="false" xhtml="true" cdata="false"/>
+            <link rel="stylesheet" href="css/up_index.css">
     </head>
     <body>
         <!-- Responsive navbar-->
@@ -45,7 +46,8 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시글 수정</h1>
                         </header>
-                        <form:form modelAttribute="vo" id="detailForm" name="detailForm">
+                        <form:form modelAttribute="vo" id="updateForm" name="updateForm">
+                            <form:input type="text" path="board_idx" class="form-control" id="board_idx" placeholder="제목 입력" value="${upBoardInfo.board_idx}" style="display: none;" name="selectedId"/>
                             <div class="form-group">
                                 <label for="title">제목</label>
                                 <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" value="${upBoardInfo.title}" />
@@ -53,7 +55,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" />
+                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">

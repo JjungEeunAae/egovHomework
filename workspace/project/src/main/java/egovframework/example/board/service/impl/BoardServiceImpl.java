@@ -67,4 +67,26 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 		return boardMapper.maxBoardIndex();
 	}
 
+	/**
+	 * 글을 수정한다.
+	 * @param vo - 수정할 정보가 담긴 BoardVO
+	 * @return void형
+	 * @exception Exception
+	 */
+	@Override
+	public int update(BoardVO vo) throws Exception {
+		return boardMapper.update(vo);
+	}
+
+	/**
+	 * 글을 삭제한다.
+	 * @param idx - 삭제할 게시글 번호
+	 * @return 삭제 결과
+	 * @exception Exception
+	 */
+	@Override
+	public int delete(int idx) throws Exception {
+		return boardMapper.delete(idx);
+	}
+
 }

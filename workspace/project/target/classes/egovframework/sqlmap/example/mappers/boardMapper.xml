@@ -23,6 +23,7 @@
 					</when>
 				</choose>
 			</if>
+			   AND UES_YN     = 'N'
 			 ORDER BY 1 DESC
 			 LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
@@ -75,5 +76,32 @@
 	<select id="maxBoardIndex" resultType="int">
 		SELECT MAX(BOARD_IDX) BOARD_IDX
   		  FROM BOARD
+	</select>
+	
+	<update id="update" parameterType="boardVO">
+		UPDATE BOARD
+		   SET TITLE       = #{title}
+		     , CONTENT     = #{content}
+		     , DATE_MODIFY = NOW()
+		 WHERE BOARD_IDX   = #{board_idx}
+	</update>
+	
+	<update id="delete" parameterType="int">
+		UPDATE BOARD 
+		   SET UES_YN    = 'Y'
+		 WHERE BOARD_IDX =  #{board_idx}
+	</update>
+	
+	
+	<!-- REPLY ALL SELECT -->
+	<select id="replyAllSelect" resultType="replyVO" parameterType="int">
+		SELECT REPLY_IDX
+			 , BOARD_IDX
+			 , WRITER
+			 , GROUP_ORD
+			 , GROUP_LAYER
+			 , UES_YN
+		  FROM REPLY R 
+		 WHERE BOARD_IDX = #{board_idx}
 	</select>
 </mapper>

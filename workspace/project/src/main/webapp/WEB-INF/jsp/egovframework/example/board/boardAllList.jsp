@@ -50,7 +50,7 @@
                                 <!-- Post categories-->
                             </header>
                                 <div id="tableArea" class="m-3 p-2">
-                                    <input type="hidden" name="selectedId" />
+                                    <input type="hidden" name="idx" />
                                     <table class="table boardAllList">
                                         <colgroup>
                                             <col width="5%"/>

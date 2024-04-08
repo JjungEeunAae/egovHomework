@@ -3,8 +3,20 @@
 }
 #boardListAndUpAndDelBnt {
     float: right;
-    width: 24%;
+    width: 204px;
+    margin: 1rem 0 1rem 1rem;
+}
+#boardListAndUpAndDelBnt .col {
+    padding: 0px !important;
 }
 #boardListAndUpAndDelBnt button {
     margin-left: 3%;
+}
+
+/* 좋아요 */
+.likeCntArea span {
+    margin-top: 0.8rem;
+}
+#likeCount {
+    cursor: pointer !important;
 }

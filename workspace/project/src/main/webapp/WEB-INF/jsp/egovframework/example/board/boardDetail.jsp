@@ -15,9 +15,11 @@
         <title>게시글 상세</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <!-- 개발자 개별 CSS -->
         <link href="css/d_Index.css" rel="stylesheet" />
     </head>
     <body>
@@ -57,8 +59,8 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <span id="dateCreated">작성일 : <fmt:formatDate value="${boardInfo.date_created}" pattern="yyyy-MM-dd HH:mm:ss" />&nbsp;/&nbsp;</span>
-                                <span id="likeCnt">좋아요 : ${boardInfo.like_count}&nbsp;/&nbsp;</span>
-                                <span id="viewCnt">조회수 : ${boardInfo.view_count}&nbsp;/&nbsp;</span>
+                                <span>좋아요 : <span id="likeCnt">${boardInfo.like_count}</span>&nbsp;/&nbsp;</span>
+                                <span>조회수 : <span id="viewCnt">${boardInfo.view_count}</span></span>
                             </div>
                             <!-- Post categories-->
                             <!-- <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
@@ -72,10 +74,32 @@
                         </section>
                     </article>
                     <article>
-                        <div class="m-3" id="boardListAndUpAndDelBnt">
-                            <button type="button" class="btn btn-secondary" id="listRedirect">목록</button>
-                            <button type="button" class="btn btn-info" id="upRedirect">수정</button>
-                            <button type="button" class="btn btn-danger" id="delRedirect">삭제</button>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-center likeCntArea">
+                                        <img src="images/egovframework/likeCount/thumb-up_14989232.png" width="40px" alt="likeCount" id="likeCount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article>
+                        <div class="container">
+                            <div class="row" id="boardListAndUpAndDelBnt">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" id="listRedirect">목록</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-info" id="upRedirect">수정</button>
+                                </div>
+                                <div class="col">
+                                    <form id="deleteForm" method="POST" action="/project/boardDel.do">
+                                        <input type="hidden" value="${boardInfo.board_idx}" name="boardIdx">
+                                        <button type="submit" class="btn btn-danger" id="delRedirect">삭제</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </article>
                     <!-- 댓글 영역-->
@@ -83,7 +107,10 @@
                         <div class="card bg-light">
                             <div class="card-body">
                                 <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="내용을 입력해주세요."></textarea></form>
+                                <form class="mb-4">
+                                    <input class="form-control mb-2" type="text" placeholder="작성자">
+                                    <textarea class="form-control" rows="3" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+                                </form>
                                 <!-- Comment with nested comments-->
                                 <div class="d-flex mb-4">
                                     <!-- Parent comment-->

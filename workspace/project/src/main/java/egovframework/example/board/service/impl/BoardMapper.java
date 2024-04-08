@@ -5,6 +5,7 @@ import java.util.List;
 import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
 import egovframework.example.board.service.BoardVO;
+import egovframework.example.board.service.ReplyVO;
 import egovframework.example.sample.service.SampleDefaultVO;
 
 @Mapper("boardMapper")
@@ -47,4 +48,25 @@ public interface BoardMapper {
 	 * @exception Exception
 	 */
 	int maxBoardIndex() throws Exception;
+	
+	/**
+	 * 글을 수정한다.
+	 * @param vo - 수정할 정보가 담긴 BoardVO
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	int update(BoardVO vo) throws Exception;
+	
+	/**
+	 * 글을 삭제한다.
+	 * @param idx - 삭제할 게시글 번호
+	 * @return 삭제 결과
+	 * @exception Exception
+	 */
+	int delete(int idx) throws Exception;
+	
+	/**
+	 * 게시글 번호 기준 댓글을 전체 조회한다.
+	 */
+	List<ReplyVO> replyAllSelect(int boardIdx) throws Exception;
 }

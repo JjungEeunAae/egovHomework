@@ -7,7 +7,7 @@ $("#backBnt").click(() => {
 
 /* 수정 처리 */
 $("#boardUpBnt").click(() => {
-    frm = document.detailForm;
+    frm = document.updateForm;
     frm.action = "/project/boardUp.do";
     frm.submit();
 });
