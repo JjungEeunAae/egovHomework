@@ -67,6 +67,11 @@ public interface BoardMapper {
 	
 	/**
 	 * 게시글 번호 기준 댓글을 전체 조회한다.
+	 * @param boardIdx - 게시글 번호
+	 * @return 게시글 번호에 해당되는 댓글 목록
+	 * @exception Exception
 	 */
 	List<ReplyVO> replyAllSelect(int boardIdx) throws Exception;
+	
+	List<ReplyVO> replyChildAllList(ReplyVO vo) throws Exception;
 }

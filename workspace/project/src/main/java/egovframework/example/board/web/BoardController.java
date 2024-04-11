@@ -20,6 +20,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
+import egovframework.example.board.service.ReplyVO;
 import egovframework.example.sample.service.SampleDefaultVO;
 
 @Controller
@@ -43,14 +44,15 @@ public class BoardController {
 		
 		/** pageing setting */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex()); // 현재 페이지 번호
+		paginationInfo.setRecordCountPerPage(20);                 // 한 페이지에 게시되는 게시물 건수
+		paginationInfo.setPageSize(searchVO.getPageSize());       // 페이징 리스트의 사이즈
 		
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
+		/** boardAllList */
 		List<?> boardList = boardService.selectBoardList(searchVO);
 		model.addAttribute("resultList", boardList);
 		
@@ -72,10 +74,23 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/detail.do")
 	public String boardDetail(@RequestParam("idx") int idx
+							, @ModelAttribute("searchVO") SampleDefaultVO searchVO
 							, Model model) throws Exception {
+		
+		/** boardDetail */
 		BoardVO vo = new BoardVO();
 		vo.setBoard_idx(idx);
 		model.addAttribute("boardInfo", selectBoard(vo));
+		
+		/** boardReplyList - parent */
+		model.addAttribute("reply", boardService.replyAllSelect(idx));
+		
+		/** boardReplyList - child */
+		ReplyVO rvo = new ReplyVO();
+		rvo.setBoard_idx(idx);
+//		rvo.setReply_idx(reIdx);
+		model.addAttribute("childReply", boardService.replyChildAllList(rvo));
+		
 		return "board/boardDetail";
 	}
 	
@@ -97,6 +112,7 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/add.do")
 	public String addView(@ModelAttribute("vo") BoardVO vo
+						, @ModelAttribute("searchVO") SampleDefaultVO searchVO
 						, Model model) throws Exception {
 		// HTML form 태그 내에 있는 input 또는 textarea 태그의 path에 맞춰 BoardVO에 셋팅
 		model.addAttribute("vo", new BoardVO());
@@ -112,6 +128,7 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/boardAdd.do", method = RequestMethod.POST)
 	public String addSample(@ModelAttribute("vo") BoardVO vo
+						  , @ModelAttribute("searchVO") SampleDefaultVO searchVO
 						  , SessionStatus status) throws Exception {
 		// 게시글 등록 쿼리문 실행
 		String result = boardService.insert(vo);
@@ -134,6 +151,7 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/up.do")
 	public String upView(@ModelAttribute("vo") BoardVO vo
+			, @ModelAttribute("searchVO") SampleDefaultVO searchVO
 						, @RequestParam("idx") int idx
 						, Model model) throws Exception {
 		BoardVO bvo = new BoardVO();

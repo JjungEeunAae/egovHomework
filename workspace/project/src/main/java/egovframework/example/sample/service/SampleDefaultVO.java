@@ -67,7 +67,7 @@ public class SampleDefaultVO implements Serializable {
 	private int lastIndex = 1;
 
 	/** recordCountPerPage */
-	private int recordCountPerPage = 10;
+	private int recordCountPerPage = 20;
 
 	public int getFirstIndex() {
 		return firstIndex;

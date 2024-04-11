@@ -1,3 +1,6 @@
+.contents {
+    height: 50vh;
+}
 .contents p {
     word-wrap: break-word;
 }
@@ -19,4 +22,19 @@
 }
 #likeCount {
     cursor: pointer !important;
+}
+/* 댓글 버튼 영역 */
+.replyBntArea {
+    padding-left: 0 !important;
+}
+.replyBntArea button {
+    width: 100%;
+    height: 85%;
+}
+/* 댓글영역 */
+.contentArea {
+    background: #ebebeb;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
 }

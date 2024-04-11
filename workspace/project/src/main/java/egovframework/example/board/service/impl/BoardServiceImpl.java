@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
+import egovframework.example.board.service.ReplyVO;
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.example.sample.service.impl.EgovSampleServiceImpl;
 
@@ -87,6 +88,22 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	@Override
 	public int delete(int idx) throws Exception {
 		return boardMapper.delete(idx);
+	}
+
+	/**
+	 * 게시글 번호 기준 댓글을 전체 조회한다.
+	 * @param boardIdx - 게시글 번호
+	 * @return 게시글 번호에 해당되는 댓글 목록
+	 * @exception Exception
+	 */
+	@Override
+	public List<ReplyVO> replyAllSelect(int boardIdx) throws Exception {
+		return boardMapper.replyAllSelect(boardIdx);
+	}
+
+	@Override
+	public List<ReplyVO> replyChildAllList(ReplyVO vo) throws Exception {
+		return boardMapper.replyChildAllList(vo);
 	}
 
 }

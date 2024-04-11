@@ -95,13 +95,44 @@
 	
 	<!-- REPLY ALL SELECT -->
 	<select id="replyAllSelect" resultType="replyVO" parameterType="int">
-		SELECT REPLY_IDX
-			 , BOARD_IDX
-			 , WRITER
-			 , GROUP_ORD
-			 , GROUP_LAYER
-			 , UES_YN
-		  FROM REPLY R 
-		 WHERE BOARD_IDX = #{board_idx}
+		SELECT REPLY_IDX 
+			 , R.BOARD_IDX
+		     , R.WRITER
+		     , R.CONTENT
+		     , R.UES_YN
+		     , GROUP_ORD
+		     , CASE WHEN GROUP_LAYER = REPLY_IDX  then 'parent'
+		            ELSE 'child'
+		       END AS GROUP_LAYER_2
+		     , GROUP_LAYER
+		  FROM REPLY R
+		  JOIN BOARD B
+		    ON R.BOARD_IDX = B.BOARD_IDX
+		 WHERE B.BOARD_IDX = #{board_idx}
+		   AND R.UES_YN = 'N'
+		 GROUP BY REPLY_IDX, R.BOARD_IDX, R.WRITER, R.CONTENT, R.UES_YN, GROUP_ORD, GROUP_LAYER, GROUP_LAYER_2
+        HAVING GROUP_LAYER_2 = 'parent'
+		 ORDER BY REPLY_IDX DESC, GROUP_ORD ASC
 	</select>
+	
+	<select id="replyChildAllList" resultType="replyVO" parameterType="replyVO">
+		SELECT R.BOARD_IDX
+		     , R.WRITER
+		     , R.CONTENT
+		     , R.UES_YN
+		     , GROUP_ORD
+		     , CASE WHEN GROUP_LAYER = REPLY_IDX  then 'parent'
+		            ELSE 'child'
+		       END AS GROUP_LAYER_2
+		     , GROUP_LAYER
+		  FROM REPLY R
+		  JOIN BOARD B
+		    ON R.BOARD_IDX = B.BOARD_IDX
+		 WHERE B.BOARD_IDX = #{board_idx}
+		   AND R.GROUP_LAYER = #{reply_idx}
+		   AND R.UES_YN = 'N'
+		 GROUP BY REPLY_IDX, R.BOARD_IDX, R.WRITER, R.CONTENT, R.UES_YN, GROUP_ORD, GROUP_LAYER, GROUP_LAYER_2
+		HAVING GROUP_LAYER_2 = 'child'
+		 ORDER BY REPLY_IDX DESC, GROUP_ORD ASC
+	 </select>
 </mapper>
