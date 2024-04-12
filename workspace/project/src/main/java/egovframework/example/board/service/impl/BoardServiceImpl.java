@@ -91,19 +91,50 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	}
 
 	/**
-	 * 게시글 번호 기준 댓글을 전체 조회한다.
+	 * 게시글 번호 기준 부모 댓글과 자식 댓글을 조회한다.
 	 * @param boardIdx - 게시글 번호
-	 * @return 게시글 번호에 해당되는 댓글 목록
+	 * @return 게시글 번호에 해당되는 부모 및 자식 댓글 목록
 	 * @exception Exception
 	 */
 	@Override
-	public List<ReplyVO> replyAllSelect(int boardIdx) throws Exception {
-		return boardMapper.replyAllSelect(boardIdx);
+	public List<ReplyVO> getParentReply(int boardIdx) throws Exception {
+		List<ReplyVO> parentReply = boardMapper.getParentReply(boardIdx);
+		// 각 댓글에 대한 대댓글 리스트 설정
+		for(ReplyVO parent : parentReply) {
+			List<ReplyVO> childReply = getChildReply(parent.getReply_idx(), boardIdx);
+			System.out.println(childReply);
+			parent.setChildReply(childReply);
+		}
+		return parentReply;
 	}
 
+	/**
+	 * 부모 댓글 기준 자식 댓글을 조회한다.
+	 * @param parentReplyIdx - 부모 댓글 번호
+	 * @param boardIdx - 게시글 번호
+	 * @return 부모 댓글 번호에 해당되는 자식 댓글 목록
+	 * @exception Exception
+	 */
 	@Override
-	public List<ReplyVO> replyChildAllList(ReplyVO vo) throws Exception {
-		return boardMapper.replyChildAllList(vo);
+	public List<ReplyVO> getChildReply(int replyIdx, int boardIdx) throws Exception {
+		return boardMapper.getChildReplyList(replyIdx, boardIdx);
 	}
+
+	
+	/**
+	 * 부모 댓글을 등록한다.
+	 * @param vo - 등록할 댓글 정보
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	@Override
+	public int prentReplySave(ReplyVO vo) throws Exception {
+		LOGGER.debug(vo.toString());
+		int result = boardMapper.prentReplySave(vo);
+		LOGGER.debug(vo.toString());
+		return result;
+	}
+	
+	
 
 }

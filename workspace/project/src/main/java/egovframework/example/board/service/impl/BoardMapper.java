@@ -2,6 +2,7 @@ package egovframework.example.board.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
 import egovframework.example.board.service.BoardVO;
@@ -66,12 +67,27 @@ public interface BoardMapper {
 	int delete(int idx) throws Exception;
 	
 	/**
-	 * 게시글 번호 기준 댓글을 전체 조회한다.
+	 * 게시글 번호 기준 부모 댓글을 조회한다.
 	 * @param boardIdx - 게시글 번호
 	 * @return 게시글 번호에 해당되는 댓글 목록
 	 * @exception Exception
 	 */
-	List<ReplyVO> replyAllSelect(int boardIdx) throws Exception;
+	List<ReplyVO> getParentReply(int boardIdx) throws Exception;
 	
-	List<ReplyVO> replyChildAllList(ReplyVO vo) throws Exception;
+	/**
+	 * 부모 댓글 기준 자식 댓글을 조회한다.
+	 * @param parentReplyIdx - 부모 댓글 번호
+	 * @param boardIdx - 게시글 번호
+	 * @return 부모 댓글 번호에 해당되는 자식 댓글 목록
+	 * @exception Exception
+	 */
+	List<ReplyVO> getChildReplyList(@Param("reply_idx") int replyIdx, @Param("board_idx") int boardIdx) throws Exception;
+	
+	/**
+	 * 부모 댓글을 등록한다.
+	 * @param vo - 등록할 댓글 정보
+	 * @return 등록 결과
+	 * @exception Exception
+	 */
+	int prentReplySave(ReplyVO vo) throws Exception;
 }

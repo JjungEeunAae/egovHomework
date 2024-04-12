@@ -9,7 +9,6 @@ function fn_link_page(pageNo){
 
 /* 글 수정 화면 function */
 function fn_select(idx) {
-    console.log(idx);
     document.listForm.idx.value = idx;
     document.listForm.action = "/project/detail.do" ;
     document.listForm.submit();
@@ -49,3 +48,13 @@ const detailRedirectBnt = () => {
     });
 };
 detailRedirectBnt();
+
+/* 검색 테스트 */
+const search = () => {
+    if($("#searchItem option:selected").text() === "전체") {
+        $("#searchContent").val("");
+    } else {
+        $("#searchForm").val($("#searchItem option:selected").text());
+    }
+}
+search();

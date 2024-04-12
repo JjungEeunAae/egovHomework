@@ -93,46 +93,54 @@
 	</update>
 	
 	
-	<!-- REPLY ALL SELECT -->
-	<select id="replyAllSelect" resultType="replyVO" parameterType="int">
-		SELECT REPLY_IDX 
-			 , R.BOARD_IDX
-		     , R.WRITER
-		     , R.CONTENT
-		     , R.UES_YN
+	<!-- REPLY PARENT SELECT -->
+	<select id="getParentReply" resultType="replyVO" parameterType="int">
+		 SELECT REPLY_IDX
+	          , BOARD_IDX
+	          , WRITER
+	          , CONTENT
+	          , UES_YN
+	          , GROUP_ORD
+	          , GROUP_LAYER
+	      FROM REPLY
+	     WHERE BOARD_IDX = #{board_idx}
+	       AND UES_YN    = 'N'
+	       AND GROUP_LAYER IS NULL
+	     ORDER BY REPLY_IDX DESC, GROUP_ORD ASC
+	</select>
+	
+	<!-- REPLY CHILD SELECT -->
+	<select id="getChildReplyList" parameterType="map" resultType="replyVO">
+		SELECT REPLY_IDX
+		     , BOARD_IDX
+		     , WRITER
+		     , CONTENT
 		     , GROUP_ORD
-		     , CASE WHEN GROUP_LAYER = REPLY_IDX  then 'parent'
-		            ELSE 'child'
-		       END AS GROUP_LAYER_2
 		     , GROUP_LAYER
-		  FROM REPLY R
-		  JOIN BOARD B
-		    ON R.BOARD_IDX = B.BOARD_IDX
-		 WHERE B.BOARD_IDX = #{board_idx}
-		   AND R.UES_YN = 'N'
-		 GROUP BY REPLY_IDX, R.BOARD_IDX, R.WRITER, R.CONTENT, R.UES_YN, GROUP_ORD, GROUP_LAYER, GROUP_LAYER_2
-        HAVING GROUP_LAYER_2 = 'parent'
+		     , UES_YN 
+		  FROM REPLY
+		 WHERE GROUP_LAYER = #{reply_idx}
+		   AND BOARD_IDX   = #{board_idx}
+		   AND UES_YN      = 'N'
 		 ORDER BY REPLY_IDX DESC, GROUP_ORD ASC
 	</select>
 	
-	<select id="replyChildAllList" resultType="replyVO" parameterType="replyVO">
-		SELECT R.BOARD_IDX
-		     , R.WRITER
-		     , R.CONTENT
-		     , R.UES_YN
-		     , GROUP_ORD
-		     , CASE WHEN GROUP_LAYER = REPLY_IDX  then 'parent'
-		            ELSE 'child'
-		       END AS GROUP_LAYER_2
-		     , GROUP_LAYER
-		  FROM REPLY R
-		  JOIN BOARD B
-		    ON R.BOARD_IDX = B.BOARD_IDX
-		 WHERE B.BOARD_IDX = #{board_idx}
-		   AND R.GROUP_LAYER = #{reply_idx}
-		   AND R.UES_YN = 'N'
-		 GROUP BY REPLY_IDX, R.BOARD_IDX, R.WRITER, R.CONTENT, R.UES_YN, GROUP_ORD, GROUP_LAYER, GROUP_LAYER_2
-		HAVING GROUP_LAYER_2 = 'child'
-		 ORDER BY REPLY_IDX DESC, GROUP_ORD ASC
-	 </select>
+	<!-- REPLY PARENT INSERT -->
+	<insert id="prentReplySave" parameterType="replyVO">
+		INSERT INTO REPLY 
+		       ( BOARD_IDX
+		       , WRITER
+		       , CONTENT
+		       , GROUP_ORD
+		       , UES_YN
+		       )  
+		VALUES ( #{board_idx}
+			   , #{writer}
+			   , #{content}
+			   , ( IFNULL((SELECT MAX(R.GROUP_ORD) + 1 AS GROUP_ORD
+			                 FROM REPLY R
+			                WHERE R.BOARD_IDX = #{board_idx}), 0))
+			   , 'N'
+			   )
+	</insert>
 </mapper>

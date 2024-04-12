@@ -83,19 +83,19 @@
                     <!-- 댓글 영역-->
                     <section class="mb-5" style="clear: both;">
                         <div class="card bg-light">
-                            <p>${reply}</p>
                             <div class="card-body">
                                 <!-- Comment form-->
                                 <div class="row">
+                                    <form:form class="d-flex" modelAttribute="replyVO" id="replyAddForm" name="replyAddForm">
                                     <div class="col-11">
-                                        <form class="mb-4">
-                                            <input class="form-control mb-2" type="text" placeholder="작성자">
-                                            <textarea class="form-control" rows="3" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
-                                        </form>
+                                        <form:input path="board_idx" type="hidden" value="${boardInfo.board_idx}"></form:input>
+                                        <form:input path="writer" cssClass="form-control mb-2" type="text" placeholder="작성자" id="replyWriter"></form:input><form:errors path="writer" />
+                                        <form:textarea path="content" cssClass="form-control" rows="3" placeholder="내용을 입력해주세요." style="resize: none;" id="replyContent"></form:textarea>&nbsp;<form:errors path="content" />
                                     </div>
                                     <div class="col-1 replyBntArea">
-                                        <button type="button" class="btn btn-secondary btn-lg">등록</button>
+                                        <button type="button" class="btn btn-secondary btn-lg" id="replySaveBnt">등록</button>
                                     </div>
+                                    </form:form>
                                 </div>
                                 <!-- Comment with nested comments-->
                                 <div class="mb-4">
@@ -107,26 +107,36 @@
                                             </div>
                                         </c:when>
                                         <c:otherwise>
-                                            <c:forEach var="item" items="${reply}" varStatus="status">
-                                                <div class="col mb-4 contentArea">
-                                                    <div class="d-flex">
-                                                        <c:if test="${item.group_layer_2 eq 'parent'}">
+                                            <c:forEach var="parent" items="${reply}" varStatus="status">
+                                            <div class="col mb-3 contentArea">
+                                                <div class="d-flex">
+                                                    <!-- 부모 -->
+                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                    <div class="ms-3 contentInnerArea">
+                                                        <div>
+                                                            <div class="fw-bold mb-1">${parent.writer}</div>
+                                                            <div>
+                                                                <p class="text-break">${parent.content}</p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- 자식 -->
+                                                        <c:forEach var="child" items="${parent.childReply}">
+                                                        <div class="d-flex mt-2 contentChildArea">
                                                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                                             <div class="ms-3">
-                                                                <div id="parent_${item.group_layer}">
-                                                                    <div class="fw-bold">${item.writer}</div>
-                                                                    <div>
-                                                                        <p>${item.content}</p>
-                                                                    </div>
+                                                                <div class="fw-bold">${child.writer}</div>
+                                                                <div>
+                                                                    <p class="text-break">${child.content}</p>
                                                                 </div>
                                                             </div>
-                                                        </c:if>
+                                                        </div>
+                                                        </c:forEach>
                                                     </div>
                                                 </div>
+                                            </div>
                                             </c:forEach>
                                         </c:otherwise>
                                     </c:choose>
-                                    <p>${childReply}</p>
                                 </div>
                             
                                     <!-- <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>

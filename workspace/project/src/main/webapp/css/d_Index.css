@@ -32,9 +32,22 @@
     height: 85%;
 }
 /* 댓글영역 */
+#replyAddForm {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
 .contentArea {
     background: #ebebeb;
-    padding: 15px;
+    padding: 20px 10px 12px 15px;
     border-radius: 10px;
     border: 1px solid #d1d1d1;
+}
+.contentInnerArea {
+    width: 100%;
+}
+.contentChildArea {
+    border: 1px solid #d5d5d5;
+    padding: 1.7%;
+    border-radius: 20px;
+    background: gainsboro;
 }

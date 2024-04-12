@@ -65,8 +65,8 @@ public class BoardController {
 	}
 	
 	/**
-	 * 글 수정화면을 조회한다.
-	 * @param id - 수정할 글 id
+	 * 글 상세를 화면으로 조회한다.
+	 * @param idx - 조회할 글 번호
 	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
 	 * @param model
 	 * @return "boardDetail"
@@ -82,14 +82,11 @@ public class BoardController {
 		vo.setBoard_idx(idx);
 		model.addAttribute("boardInfo", selectBoard(vo));
 		
-		/** boardReplyList - parent */
-		model.addAttribute("reply", boardService.replyAllSelect(idx));
+		/** boardReplyList */
+		model.addAttribute("reply", boardService.getParentReply(idx));
 		
-		/** boardReplyList - child */
-		ReplyVO rvo = new ReplyVO();
-		rvo.setBoard_idx(idx);
-//		rvo.setReply_idx(reIdx);
-		model.addAttribute("childReply", boardService.replyChildAllList(rvo));
+		/** boardReplySave */
+		model.addAttribute("replyVO", new ReplyVO());
 		
 		return "board/boardDetail";
 	}
@@ -127,9 +124,8 @@ public class BoardController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/boardAdd.do", method = RequestMethod.POST)
-	public String addSample(@ModelAttribute("vo") BoardVO vo
-						  , @ModelAttribute("searchVO") SampleDefaultVO searchVO
-						  , SessionStatus status) throws Exception {
+	public String addSample( @ModelAttribute("vo") BoardVO vo
+						   , SessionStatus status) throws Exception {
 		// 게시글 등록 쿼리문 실행
 		String result = boardService.insert(vo);
 		int idx = boardService.maxBoardIndex();
@@ -150,8 +146,8 @@ public class BoardController {
 	 * @return "boardUp"
 	 */
 	@RequestMapping(value = "/up.do")
-	public String upView(@ModelAttribute("vo") BoardVO vo
-			, @ModelAttribute("searchVO") SampleDefaultVO searchVO
+	public String upView( @ModelAttribute("vo") BoardVO vo
+						, @ModelAttribute("searchVO") SampleDefaultVO searchVO
 						, @RequestParam("idx") int idx
 						, Model model) throws Exception {
 		BoardVO bvo = new BoardVO();
@@ -187,7 +183,7 @@ public class BoardController {
 	 * 글을 삭제한다.
 	 * @param boardIdx - 삭제할 글번호
 	 * @param status
-	 * @return "삭제 결과값"
+	 * @return "list.do"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "boardDel.do", method = RequestMethod.POST)
@@ -200,5 +196,24 @@ public class BoardController {
 		} else {
 			return "forward:/detail.do?idx=" + boardIdx;
 		}
+	}
+	
+	/**
+	 * 부모 댓글을 등록한다.
+	 * @param vo - 등록할 댓글 정보
+	 * @param status
+	 * @return "redirect:/detail.do" + 댓글 등록 결과 + 게시글 번호
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "replyAdd.do", method = RequestMethod.POST)
+	public String replyAdd(@ModelAttribute("replyVO") ReplyVO vo
+						  , SessionStatus status) throws Exception {
+		int result = boardService.prentReplySave(vo);
+		boolean replySaveResult = false;
+		if(result > 0) {
+			status.setComplete();
+			replySaveResult = true;
+		}
+		return "redirect:/detail.do?save=" + replySaveResult + "&idx=" + vo.getBoard_idx();
 	}
 }

@@ -28,12 +28,12 @@
                             <form:input type="text" path="board_idx" class="form-control" id="board_idx" placeholder="제목 입력" value="${upBoardInfo.board_idx}" style="display: none;" name="selectedId"/>
                             <div class="form-group">
                                 <label for="title">제목</label>
-                                <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" value="${upBoardInfo.title}" />
+                                <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" value="${upBoardInfo.title}" maxlength="50" />
                                 &nbsp;<form:errors path="title" />
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" />
+                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" maxlength="200" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">

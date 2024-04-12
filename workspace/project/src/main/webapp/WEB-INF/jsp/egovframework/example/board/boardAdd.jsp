@@ -29,17 +29,17 @@
                         <form:form modelAttribute="vo" id="detailForm" name="detailForm">
                             <div class="form-group">
                                 <label for="title">제목</label>
-                                <form:input type="text" path="title" class="form-control" id="title" placeholder="제목 입력" />
+                                <form:input type="text" path="title" class="form-control" id="boardTitle" placeholder="제목 입력" />
                                 &nbsp;<form:errors path="title" />
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" />
+                                <form:input type="text" path="writer" class="form-control" id="boardWriter" maxlength="50" placeholder="작성자 입력" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">
                                 <label for="content">내용</label>
-                                <form:textarea type="text" path="content" class="form-control" id="content" placeholder="내용 입력" rows="10" />
+                                <form:textarea type="text" path="content" class="form-control" id="boardContent" placeholder="내용 입력" rows="10" maxlength="200" />
                                 &nbsp;<form:errors path="content" />
                             </div>
                             <div class="d-flex justify-content-end">
