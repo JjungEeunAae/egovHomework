@@ -72,9 +72,9 @@
                                     <button type="button" class="btn btn-info" id="upRedirect">수정</button>
                                 </div>
                                 <div class="col">
-                                    <form id="deleteForm" method="POST" action="/project/boardDel.do">
+                                    <form id="deleteForm" name="deleteForm" method="POST" action="/project/boardDel.do">
                                         <input type="hidden" value="${boardInfo.board_idx}" name="boardIdx">
-                                        <button type="submit" class="btn btn-danger" id="delRedirect">삭제</button>
+                                        <button type="button" class="btn btn-danger" id="delRedirect">삭제</button>
                                     </form>
                                 </div>
                             </div>

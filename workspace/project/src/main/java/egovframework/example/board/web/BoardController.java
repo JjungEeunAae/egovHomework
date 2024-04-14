@@ -58,8 +58,11 @@ public class BoardController {
 		
 		/** paging */
 		int totCnt = boardService.selectBoardListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+		if(totCnt > 0) {
+			System.out.println("검색조건 >>>>>>>>>>     " + searchVO.getSearchKeyword());
+			paginationInfo.setTotalRecordCount(totCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+		}
 		
 		return "board/boardAllList";
 	}

@@ -33,7 +33,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="writer">작성자</label>
-                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" maxlength="200" />
+                                <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">

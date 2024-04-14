@@ -36,15 +36,22 @@
                 <!-- <li class="nav-item"><a class="nav-link" href="/project/list.do">Home</a></li> -->
                 <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li> -->
                 <form:form modelAttribute="searchVO" id="searchForm" name="searchForm" method="post" cssClass="d-flex">
-                    <label for="searchCondition" style="display:none;"></label>
+                    <!-- <label for="searchCondition" style="display:none;"></label> -->
                     <!-- <spring:message code="search.choose" ></spring:message> -->
                     <form:select path="searchCondition" cssClass="me-1 form-select" id="searchItem">
-                        <form:option value="" label="전체"></form:option>
+                        <form:option value="" label="전체" selected="selected"></form:option>
                         <form:option value="1" label="제목"></form:option>
                         <form:option value="2" label="내용"></form:option>
                     </form:select>
-                    <form:input cssClass="form-control me-2" path="searchKeyword" id="searchContent" type="text"  aria-label="Enter search term..." aria-describedby="button-search" value="${searchVO.searchKeyword}" maxlength="60"></form:input>
-                    <button class="btn btn-outline-success" id="searchBtn" type="button" onclick="fn_selectList();">Search</button>
+                    <form:input cssClass="form-control me-2"
+                                path="searchKeyword"
+                                id="searchContent"
+                                type="text"  
+                                aria-label="Enter search term..." 
+                                aria-describedby="button-search" 
+                                value="${searchVO.searchKeyword}" 
+                                maxlength="60"></form:input>
+                    <button class="btn btn-outline-success" id="searchBtn" type="button">Search</button>
                 </form:form>
             </ul>
         </div>

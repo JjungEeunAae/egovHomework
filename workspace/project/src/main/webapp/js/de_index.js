@@ -11,10 +11,33 @@ $("#upRedirect").click(() => {
     window.location.href = "up.do?idx=" + boardIdx;
 });
 
+/* 게시글 삭제 */
 $("#delRedirect").click(() => {
     if(boardIdx != 0 || boardIdx != null) {
-        alert("게시글 삭제가 완료되었습니다.");
-    }
+        Swal.fire({
+            title: "삭제 확인 알림",
+            text: "게시글을 삭제 하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "확인",
+            cancelButtonText: "취소"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "삭제 완료",
+                    text: "게시글이 삭제되었습니다.",
+                    icon: "success"
+                }).then((okResult) => {
+                    if(okResult.isConfirmed) {
+                        let frm = document.deleteForm;
+                        frm.submit();
+                    };
+                });
+            };
+        });
+    };
 });
 
 /* 좋아요 */

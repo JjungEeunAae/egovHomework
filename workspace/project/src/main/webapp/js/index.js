@@ -14,13 +14,6 @@ function fn_select(idx) {
     document.listForm.submit();
 };
 
-/* 글 목록 화면 function */
-function fn_selectList() {
-    // document.listForm.action = "<c:url value='/list.do'/>";
-    document.searchForm.action = "/project/list.do";
-    document.searchForm.submit();
-};
-
 /* 글 등록 화면 function */
 function fn_addView() {
     document.listForm.action = "/project/add.do";
@@ -49,12 +42,36 @@ const detailRedirectBnt = () => {
 };
 detailRedirectBnt();
 
-/* 검색 테스트 */
-const search = () => {
-    if($("#searchItem option:selected").text() === "전체") {
-        $("#searchContent").val("");
-    } else {
-        $("#searchForm").val($("#searchItem option:selected").text());
+/* 검색할 때 '전체'로 맞췄을 시 input 값을 비우는 함수*/
+$("#searchItem").change(() => {
+    if ($("#searchItem").val() === "") {
+        $("#searchContent").val(""); // 검색 입력(input) 내용을 지웁니다.
     }
+});
+
+const search = () => {
+    // const currentUrl = window.location.href;
+    // let updatedUrl = "";
+    // const searchItem = $("#searchItem").val();
+    // const searchKeyword = $("#searchContent").val();
+    // let newParam = "searchCondition=" + searchItem + "&searchKeyword" + searchKeyword;
+    $("#searchBtn").click(() => {
+        console.log($("#searchItem").val());
+        if($("#searchItem").val() === "1" || $("#searchItem").val() === "2") {
+            if($("#searchContent").val() === "" || $("#searchContent").val().trim() === "") {
+                Swal.fire({
+                    title: "알림",
+                    text: "검색할 키워드를 작성해주세요.",
+                    icon: "warning"
+                });
+            } else {
+                document.searchForm.action = "/project/list.do";
+                document.searchForm.submit();
+            };
+        } else {
+            document.searchForm.action = "/project/list.do";
+            document.searchForm.submit();
+        };
+    });
 }
 search();
