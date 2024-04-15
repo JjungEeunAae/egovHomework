@@ -45,7 +45,7 @@ public class BoardController {
 		/** pageing setting */
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(searchVO.getPageIndex()); // 현재 페이지 번호
-		paginationInfo.setRecordCountPerPage(20);                 // 한 페이지에 게시되는 게시물 건수
+		paginationInfo.setRecordCountPerPage(8);                  // 한 페이지에 게시되는 게시물 건수
 		paginationInfo.setPageSize(searchVO.getPageSize());       // 페이징 리스트의 사이즈
 		
 		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
@@ -58,8 +58,8 @@ public class BoardController {
 		
 		/** paging */
 		int totCnt = boardService.selectBoardListTotCnt(searchVO);
+		model.addAttribute("totCnt", totCnt);
 		if(totCnt > 0) {
-			System.out.println("검색조건 >>>>>>>>>>     " + searchVO.getSearchKeyword());
 			paginationInfo.setTotalRecordCount(totCnt);
 			model.addAttribute("paginationInfo", paginationInfo);
 		}

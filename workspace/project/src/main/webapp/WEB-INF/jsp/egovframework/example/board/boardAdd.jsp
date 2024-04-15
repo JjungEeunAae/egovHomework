@@ -13,6 +13,21 @@
         <title>게시글 등록</title>
         <!-- <script type="text/javascript" src="<c:url value='/cmmn/validator.do'/>"></script> -->
         <!-- <validator:javascript formName="boardVO" staticJavascript="false" xhtml="true" cdata="false"/> -->
+        <style>
+            #detailForm label::after {
+                content: "*";
+                color: red;
+                margin-left: 3px;
+            }
+            .boardAddGuide span::before {
+                content: "*";
+                color: red;
+            }
+            .boardAddGuide span {
+                font-size: 11px;
+                color: gray;
+            }
+        </style>
     </head>
     <body>
         <!-- Responsive navbar-->
@@ -22,14 +37,17 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-10" style="margin: 0 auto;">
-                        <header class="mb-4 mt-4">
+                        <header class="mb-2 mt-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시글 등록</h1>
+                            <div class="d-flex justify-content-end boardAddGuide">
+                                <span>는 필수입력 값입니다.</span>
+                            </div>
                         </header>
                         <form:form modelAttribute="vo" id="detailForm" name="detailForm">
                             <div class="form-group">
                                 <label for="title">제목</label>
-                                <form:input type="text" path="title" class="form-control" id="boardTitle" placeholder="제목 입력" />
+                                <form:input type="text" path="title" class="form-control" id="boardTitle" placeholder="제목 입력" maxlength="50"/>
                                 &nbsp;<form:errors path="title" />
                             </div>
                             <div class="form-group">

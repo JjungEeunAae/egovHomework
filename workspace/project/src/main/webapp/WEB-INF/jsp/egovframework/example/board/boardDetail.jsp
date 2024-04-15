@@ -103,7 +103,7 @@
                                     <c:choose>
                                         <c:when test="${empty reply}">
                                             <div class="col text-center">
-                                                <p>등록된 댓글이 없습니다.</p>
+                                                <h3>등록된 댓글이 없습니다.</h3>
                                             </div>
                                         </c:when>
                                         <c:otherwise>

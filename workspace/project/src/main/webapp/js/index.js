@@ -3,7 +3,16 @@ const urlParams = new URLSearchParams(window.location.search);
 /* pagination 페이지 링크 function */
 function fn_link_page(pageNo){
     document.listForm.pageIndex.value = pageNo;
-    document.listForm.action = "/project/list.do";
+    let searchItem = $("#searchItem option:selected").val();
+    let searchContent = $("#searchContent").val();
+
+    // 검색 내용이 빈 값으면 URL을 간단히 표현하기
+    if(searchContent === "" || searchContent.trim() === "") {
+        document.listForm.action = "/project/list.do";
+    } else {
+        document.listForm.action = "/project/list.do?searchCondition=" + searchItem
+                                    + "&searchKeyword=" + searchContent
+    }
     document.listForm.submit();
 }
 
@@ -46,7 +55,7 @@ detailRedirectBnt();
 $("#searchItem").change(() => {
     if ($("#searchItem").val() === "") {
         $("#searchContent").val(""); // 검색 입력(input) 내용을 지웁니다.
-    }
+    };
 });
 
 const search = () => {

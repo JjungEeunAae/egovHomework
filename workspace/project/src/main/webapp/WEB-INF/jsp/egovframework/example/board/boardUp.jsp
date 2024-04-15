@@ -20,9 +20,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-10" style="margin: 0 auto;">
-                        <header class="mb-4 mt-4">
+                        <header class="mb-2 mt-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1"><span id="titleVar">|</span>게시글 수정</h1>
+                            <div class="d-flex justify-content-end boardAddGuide">
+                                <span>는 필수입력 값입니다.</span>
+                            </div>
                         </header>
                         <form:form modelAttribute="vo" id="updateForm" name="updateForm">
                             <form:input type="text" path="board_idx" class="form-control" id="board_idx" placeholder="제목 입력" value="${upBoardInfo.board_idx}" style="display: none;" name="selectedId"/>
@@ -32,14 +35,14 @@
                                 &nbsp;<form:errors path="title" />
                             </div>
                             <div class="form-group">
-                                <label for="writer">작성자</label>
+                                <label for="writer" class="no-asterisk">작성자</label>
                                 <form:input type="text" path="writer" class="form-control" id="writer" maxlength="30" placeholder="작성자 입력" value="${upBoardInfo.writer}" disabled="true" />
                                 &nbsp;<form:errors path="writer" />
                             </div>
                             <div class="form-group">
                                 <label for="content">내용</label>
                                 <input type="text" value="${upBoardInfo.content}" style="display: none;" id="contentResponse">
-                                <form:textarea type="text" path="content" class="form-control" id="content" placeholder="내용 입력" rows="10" />
+                                <form:textarea type="text" path="content" class="form-control" id="content" placeholder="내용 입력" rows="10"  maxlength="200"/>
                                 &nbsp;<form:errors path="content" />
                             </div>
                             <div class="d-flex justify-content-end">

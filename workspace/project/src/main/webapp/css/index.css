@@ -17,6 +17,9 @@
     font-weight: bold;
 }
 /* 게시판 목록 열 가운데정렬 */
+#tableArea {
+    height: 695px; 
+}
 #tableArea .boardAllList th,
 #tableArea .boardAllList tbody td {
     text-align: center;
@@ -27,10 +30,19 @@
 }
 /* 게시글 내용 한줄라인 글자수 제한 */
 .exclude-row .txt_line {
-    width:190px;
+    width:200px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+}
+/* 게시글 제목 한줄라인 글자수 제한 */
+.exclude-row a {
+    width:100px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    display: block;
+    padding-left: 10px;
 }
 /* 버튼 오른쪽정렬 */
 .btn-area {

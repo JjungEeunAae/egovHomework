@@ -1,3 +1,19 @@
 #writer {
-    background: white;
+    background: #ebebeb;
+}
+.boardAddGuide span::before {
+    content: "*";
+    color: red;
+}
+.boardAddGuide span {
+    font-size: 11px;
+    color: gray;
+}
+#updateForm label::after {
+    content: "*";
+    color: red;
+    margin-left: 3px;
+}
+.no-asterisk::after {
+    content: none !important; /* * 문자를 표시하지 않음 */
 }
